@@ -14,7 +14,7 @@ mkdir -p "${MUSL_PATH}/lib"
 touch "${MUSL_PATH}/include/sys/cdefs.h"
 
 echo "--- Building OpenSSL 3.5.5 LTS ---"
-cd ~/opensslbuild/openssl-3.5.5
+cd ~/lighttpdOpensslBuild/openssl-3.5.5
 make clean || true
 CC="musl-gcc" ./Configure linux-x86_64 no-shared no-async no-afalgeng \
     -DOPENSSL_NO_SECURE_MEMORY --prefix="${MUSL_PATH}" --openssldir="${MUSL_PATH}/ssl"
@@ -22,7 +22,7 @@ make -j$(nproc)
 make install_sw
 
 echo "--- Configuring Lighttpd 1.4.82 ---"
-cd ~/opensslbuild/lighttpd-1.4.82
+cd ~/lighttpdOpensslBuild/lighttpd-1.4.82
 make distclean || true
 
 # Recreate Version Stamp
