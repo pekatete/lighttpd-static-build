@@ -10,7 +10,7 @@ sudo apt install -y musl-tools musl-dev
 ```
 musl-gcc --version
 ```
-
+# Developement folder setup
 1. Create a folder in home directory named **lighttpdOpensslBuild**
 2. Download Lighttpd 1.4.82 from: https://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.82.tar.gz
 3. Download OpenSSL 3.5.5 from: https://github.com/openssl/openssl/releases/download/openssl-3.5.5/openssl-3.5.5.tar.gz
