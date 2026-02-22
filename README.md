@@ -8,26 +8,26 @@
 
 NOTE: The static build includes the following 21 modules
 
-mod_access
-mod_accesslog
-mod_alias
-mod_auth
-mod_cgi
-mod_redirect
-mod_rewrite
-mod_setenv
-mod_expire
-mod_fastcgi
-mod_scgi
-mod_proxy
-mod_openssl
-mod_deflate
-mod_magnet
-mod_maxminddb
-mod_dirlisting
-mod_indexfile
-mod_staticfile
-mod_evhost
+mod_access,
+mod_accesslog,
+mod_alias,
+mod_auth,
+mod_cgi,
+mod_redirect,
+mod_rewrite,
+mod_setenv,
+mod_expire,
+mod_fastcgi,
+mod_scgi,
+mod_proxy,
+mod_openssl,
+mod_deflate,
+mod_magnet,
+mod_maxminddb,
+mod_dirlisting,
+mod_indexfile,
+mod_staticfile,
+mod_evhost,
 mod_simple_vhost
 
 # LICENSE: MIT
