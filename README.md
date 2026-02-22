@@ -41,6 +41,7 @@ mod_staticfile,
 mod_evhost,
 mod_simple_vhost
 
+# Obiter-dicta
 Ensure you address the requirements of the Open SSL 3.5.x series, which mandates a C99-compliant compiler and the presence of Linux development headers
 ```
 sudo apt update
