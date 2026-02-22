@@ -6,15 +6,16 @@
 set -e # Exit on error
 
 # 1. Environment Setup
-'''
+```
 export MUSL_PATH="${HOME}/musl-libs"
 export PATH="${MUSL_PATH}/bin:${PATH}"
 mkdir -p "${MUSL_PATH}/include/sys"
 mkdir -p "${MUSL_PATH}/lib"
-'''
+```
 
 # Create Dummy Header to block Glibc leakage
-'''
+
+```
 touch "${MUSL_PATH}/include/sys/cdefs.h"
 
 echo "--- Building OpenSSL 3.5.5 LTS ---"
@@ -28,19 +29,21 @@ make install_sw
 echo "--- Configuring Lighttpd 1.4.82 ---"
 cd ~/opensslbuild/lighttpd-1.4.82
 make distclean || true
-'''
+```
 
 # Recreate Version Stamp
-'''
+
+```
 cat <<EOF > src/versionstamp.h
 #define LIGHTTPD_VERSION_ID 10482
 #define LIGHTTPD_VERSION_STRING "1.4.82-musl-static"
 #define REPO_VERSION ""
 EOF
-'''
+```
 
 # Recreate Static Plugin Map
-'''
+
+```
 cat <<EOF > src/plugin-static.h
 PLUGIN_INIT(mod_access)
 PLUGIN_INIT(mod_accesslog)
@@ -64,8 +67,9 @@ PLUGIN_INIT(mod_staticfile)
 PLUGIN_INIT(mod_evhost)
 PLUGIN_INIT(mod_simple_vhost)
 EOF
-'''
+```
 
+```
 CC="musl-gcc" ./configure \
     --build=x86_64-pc-linux-gnu --host=x86_64-unknown-linux-musl \
     --enable-static --disable-shared \
@@ -84,12 +88,18 @@ make lighttpd-mod_openssl.o lighttpd-mod_deflate.o lighttpd-mod_magnet.o \
      lighttpd-mod_auth.o lighttpd-mod_accesslog.o lighttpd-mod_proxy.o \
      lighttpd-mod_cgi.o lighttpd-mod_fastcgi.o lighttpd-algo_hmac.o \
      lighttpd-mod_expire.o lighttpd-mod_evhost.o lighttpd-mod_simple_vhost.o
+```
 
 # Build Static-Aware Plugin Loader & Auth API
+
+```
 musl-gcc -DHAVE_CONFIG_H -DLIGHTTPD_STATIC -I. -I.. -I${MUSL_PATH}/include -g -O2 -c plugin.c -o lighttpd-plugin.o
 musl-gcc -DHAVE_CONFIG_H -DLIGHTTPD_STATIC -I. -I.. -I${MUSL_PATH}/include -g -O2 -c mod_auth_api.c -o lighttpd-mod_auth_api.o
+```
 
 # Build Core Objects
+
+```
 make lighttpd || true
 
 echo "--- Final Link ---"
@@ -121,5 +131,7 @@ musl-gcc -g -O2 -pipe -Wall -W -Wshadow -pedantic -o lighttpd \
     -lssl -lcrypto -lpcre2-8 -lz -lzstd -lbz2 -lbrotlienc -lbrotlidec -lbrotlicommon -lmaxminddb -llua -lm -ldl -lpthread -latomic
 
 strip --strip-all lighttpd
+
 echo "Build Successful: $(pwd)/lighttpd"
 file lighttpd
+```
