@@ -6,12 +6,15 @@
 set -e # Exit on error
 
 # 1. Environment Setup
+'''
 export MUSL_PATH="${HOME}/musl-libs"
 export PATH="${MUSL_PATH}/bin:${PATH}"
 mkdir -p "${MUSL_PATH}/include/sys"
 mkdir -p "${MUSL_PATH}/lib"
+'''
 
 # Create Dummy Header to block Glibc leakage
+'''
 touch "${MUSL_PATH}/include/sys/cdefs.h"
 
 echo "--- Building OpenSSL 3.5.5 LTS ---"
@@ -25,15 +28,19 @@ make install_sw
 echo "--- Configuring Lighttpd 1.4.82 ---"
 cd ~/opensslbuild/lighttpd-1.4.82
 make distclean || true
+'''
 
 # Recreate Version Stamp
+'''
 cat <<EOF > src/versionstamp.h
 #define LIGHTTPD_VERSION_ID 10482
 #define LIGHTTPD_VERSION_STRING "1.4.82-musl-static"
 #define REPO_VERSION ""
 EOF
+'''
 
 # Recreate Static Plugin Map
+'''
 cat <<EOF > src/plugin-static.h
 PLUGIN_INIT(mod_access)
 PLUGIN_INIT(mod_accesslog)
@@ -57,6 +64,7 @@ PLUGIN_INIT(mod_staticfile)
 PLUGIN_INIT(mod_evhost)
 PLUGIN_INIT(mod_simple_vhost)
 EOF
+'''
 
 CC="musl-gcc" ./configure \
     --build=x86_64-pc-linux-gnu --host=x86_64-unknown-linux-musl \
